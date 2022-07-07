@@ -1,0 +1,14 @@
+.main-page{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.users-card {
+  margin-top: 10px;
+  min-width: 50%;
+}
+
+table {
+  width: 100%;
+}

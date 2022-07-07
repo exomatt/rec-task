@@ -36,7 +36,6 @@ export class MainPageComponent implements OnInit, AfterViewInit {
 
   loadData() {
     this.isLoading = true;
-    let URL = `http://localhost/database.php?pageno=${this.currentPage}&per_page=${this.pageSize}`;
     this.userService.getUsers({
       page: this.currentPage,
       pageSize: this.pageSize
@@ -58,10 +57,13 @@ export class MainPageComponent implements OnInit, AfterViewInit {
   }
 
   pageChanged(event: PageEvent) {
-    console.log({event});
     this.pageSize = event.pageSize;
     this.currentPage = event.pageIndex;
     this.loadData();
+  }
+
+  onAddButtonClick(){
+    console.log('button click')
   }
 
 }

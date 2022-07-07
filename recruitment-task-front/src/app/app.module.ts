@@ -17,6 +17,7 @@ import {AppRoutingModule} from "./app-router";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     HttpClientModule,
     MatPaginatorModule,
     MatTableModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatGridListModule
   ],
   providers: [{
     provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
