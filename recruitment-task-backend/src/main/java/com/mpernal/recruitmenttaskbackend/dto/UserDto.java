@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class UserDto implements IUserDto {
+public class UserDto {
     @NotNull
     private Long id;
     @NotNull

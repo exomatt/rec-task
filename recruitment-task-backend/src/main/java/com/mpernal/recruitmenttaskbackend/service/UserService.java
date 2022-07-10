@@ -1,13 +1,12 @@
 package com.mpernal.recruitmenttaskbackend.service;
 
-import com.mpernal.recruitmenttaskbackend.dto.IUserDto;
-import com.mpernal.recruitmenttaskbackend.dto.PaginatedDataWrapper;
-import com.mpernal.recruitmenttaskbackend.dto.UserDto;
+import com.mpernal.recruitmenttaskbackend.dto.*;
 import com.mpernal.recruitmenttaskbackend.mapper.UserMapper;
 import com.mpernal.recruitmenttaskbackend.model.User;
 import com.mpernal.recruitmenttaskbackend.repository.UserRepository;
 import com.mpernal.recruitmenttaskbackend.utils.SQLUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +16,11 @@ import java.util.Optional;
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public PaginatedDataWrapper<IUserDto> findAll(Integer page, Integer pageSize, String orderBy, String orderDirection) {
@@ -36,11 +37,12 @@ public class UserService {
         return userMapper.entityToDto(optionalUser.get());
     }
 
-    public UserDto save(UserDto userDto) {
+    public UserDto save(CreateUserDto createUserDto) {
         UserMapper userMapper = UserMapper.INSTANCE;
-        User User = userMapper.dtoToNewEntity(userDto);
-        userRepository.saveAndFlush(User);
-        return userMapper.entityToDto(User);
+        User user = userMapper.dtoToNewEntity(createUserDto);
+        user.setHashedPassword(passwordEncoder.encode(createUserDto.getPassword()));
+        userRepository.saveAndFlush(user);
+        return userMapper.entityToDto(user);
     }
 
     public UserDto update(UserDto userDto) {
@@ -49,12 +51,24 @@ public class UserService {
             return null;
         }
 
-        User User = optionalUser.get();
+        User user = optionalUser.get();
         UserMapper mapper = UserMapper.INSTANCE;
-        mapper.dtoToExistingEntity(userDto, User);
-        userRepository.saveAndFlush(User);
+        mapper.dtoToExistingEntity(userDto, user);
+        userRepository.saveAndFlush(user);
 
-        return mapper.entityToDto(User);
+        return mapper.entityToDto(user);
+    }
+
+    public UserDto changePassword(ChangePasswordRequest changePasswordRequest) {
+        Optional<User> optionalUser = userRepository.findById(changePasswordRequest.getId());
+        if (optionalUser.isEmpty()) {
+            return null;
+        }
+        User user = optionalUser.get();
+        user.setHashedPassword(passwordEncoder.encode(changePasswordRequest.getPassword()));
+        userRepository.saveAndFlush(user);
+        UserMapper mapper = UserMapper.INSTANCE;
+        return mapper.entityToDto(user);
     }
 
     public void delete(Long userId) {
@@ -62,5 +76,13 @@ public class UserService {
             throw new RuntimeException("No user with id: " + userId + " found");
         }
         userRepository.deleteById(userId);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 }

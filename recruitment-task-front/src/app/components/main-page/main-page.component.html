@@ -4,7 +4,8 @@
       <mat-grid-list cols="6" rowHeight="2:1">
         <mat-grid-tile colspan="5"><p> User Management</p></mat-grid-tile>
         <mat-grid-tile colspan="1">
-          <button mat-mini-fab color="primary" aria-label="Open user dialog" (click)="onAddButtonClick()">
+          <button mat-mini-fab color="primary" matTooltip="Add user" aria-label="Open user dialog"
+                  (click)="onOpenUserDialogClick()">
             <mat-icon>add</mat-icon>
           </button>
         </mat-grid-tile>
@@ -32,6 +33,25 @@
             <td mat-cell *matCellDef="let element"> {{element.email}} </td>
           </ng-container>
 
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions</th>
+            <td mat-cell *matCellDef="let element">
+              <div>
+                <button mat-icon-button color="primary" matTooltip="Edit user" aria-label="Open edit dialog"
+                        (click)="onOpenUserDialogClick(element)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" matTooltip="Delete user" aria-label="Delete user"
+                        (click)="onDeleteClick(element)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" matTooltip="Change user password"
+                        aria-label="Open change password dialog" (click)="onChangePasswordClick(element)">
+                  <mat-icon>edit_attributes</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -9,4 +9,8 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     <T> List<T> findAllProjectedBy(Class<T> clazz, Pageable pageable);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
 }

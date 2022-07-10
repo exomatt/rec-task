@@ -8,7 +8,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {RouterModule} from '@angular/router';
 import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatCardModule} from "@angular/material/card";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
@@ -18,11 +18,17 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatGridListModule} from "@angular/material/grid-list";
+import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainPageComponent
+    MainPageComponent,
+    UserDialogComponent,
+    ChangePasswordDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -40,7 +46,10 @@ import {MatGridListModule} from "@angular/material/grid-list";
     MatPaginatorModule,
     MatTableModule,
     MatProgressBarModule,
-    MatGridListModule
+    MatGridListModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatTooltipModule
   ],
   providers: [{
     provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

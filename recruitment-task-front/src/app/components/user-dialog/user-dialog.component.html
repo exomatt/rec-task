@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>{{userDto.id ? "Update user" : "Add new user"}}</h1>
+<div mat-dialog-content>
+  <form [formGroup]="userForm" class="user-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" required>
+      <mat-error *ngIf="userForm.get('username')?.hasError('required')">
+        Username is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="userForm.get('username')?.hasError('maxlength')">
+        Username is <strong>too long</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput placeholder="Email" formControlName="email" required>
+      <mat-error *ngIf="userForm.get('email')?.hasError('pattern') && !userForm.get('email')?.hasError('required')">
+        Please enter a valid email address
+      </mat-error>
+      <mat-error *ngIf="userForm.get('email')?.hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="userForm.get('email')?.hasError('maxlength')">
+        Email is <strong>too long</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="!userDto.id">
+      <mat-label>Password</mat-label>
+      <input type="password" formControlName="password" matInput required>
+      <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+        Password is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="userForm.get('password')?.hasError('maxlength')">
+        Password is <strong>too long</strong>
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onFormSubmit()" cdkFocusInitial>Save</button>
+</div>

@@ -22,6 +22,4 @@ public class User {
     @Column(name = "HASHED_PASSWORD", nullable = false)
     private String hashedPassword;
 
-    @Column(name = "SALT", nullable = false)
-    private String salt;
 }

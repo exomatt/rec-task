@@ -1,8 +1,6 @@
 package com.mpernal.recruitmenttaskbackend.controller;
 
-import com.mpernal.recruitmenttaskbackend.dto.IUserDto;
-import com.mpernal.recruitmenttaskbackend.dto.PaginatedDataWrapper;
-import com.mpernal.recruitmenttaskbackend.dto.UserDto;
+import com.mpernal.recruitmenttaskbackend.dto.*;
 import com.mpernal.recruitmenttaskbackend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -25,33 +23,53 @@ public class UserController {
     public ResponseEntity<PaginatedDataWrapper<IUserDto>> getAll(@RequestParam Integer page,
                                                                  @RequestParam Integer pageSize,
                                                                  @RequestParam(required = false) String orderBy,
-                                                                 @RequestParam(required = false) String orderDirection){
+                                                                 @RequestParam(required = false) String orderDirection) {
         return ResponseEntity.ok(userService.findAll(page, pageSize, orderBy, orderDirection));
     }
 
-    @Operation(summary = "Get book by ID")
+    @Operation(summary = "Get user by ID")
     @GetMapping("/{bookId}")
-    public ResponseEntity<UserDto> getById(@PathVariable Long bookId){
+    public ResponseEntity<UserDto> getById(@PathVariable Long bookId) {
         return ResponseEntity.ok(userService.findById(bookId));
     }
 
-    @Operation(summary = "Create new book")
+    @Operation(summary = "Create new user")
     @PostMapping("/")
-    public ResponseEntity<UserDto> saveBook(@Valid @RequestBody UserDto bookDto) {
+    public ResponseEntity<UserDto> saveUser(@Valid @RequestBody CreateUserDto bookDto) {
         return ResponseEntity.ok(userService.save(bookDto));
     }
 
-    @Operation(summary = "Update book")
+    @Operation(summary = "Change password")
+    @PostMapping("/changePassword")
+    public ResponseEntity<UserDto> changePassword(@Valid @RequestBody ChangePasswordRequest changePassword) {
+        return ResponseEntity.ok(userService.changePassword(changePassword));
+    }
+
+    @Operation(summary = "Update user")
     @PutMapping("/")
-    public ResponseEntity<UserDto> updateBook(@Valid @RequestBody UserDto bookDto) {
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto bookDto) {
         return ResponseEntity.ok(userService.update(bookDto));
     }
 
-    @Operation(summary = "Delete book by ID")
+    @Operation(summary = "Delete user by ID")
     @ApiResponses()
-    @DeleteMapping("/{bookId}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long bookId) {
-        userService.delete(bookId);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.delete(userId);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Check if user exists by username")
+    @ApiResponses()
+    @GetMapping("/existsByUsername")
+    public ResponseEntity<Boolean> existsByUsername(@RequestParam String username) {
+        return ResponseEntity.ok(userService.existsByUsername(username));
+    }
+
+    @Operation(summary = "Check if user exists by email")
+    @ApiResponses()
+    @GetMapping("/existsByEmail")
+    public ResponseEntity<Boolean> existsByEmail(@RequestParam String email) {
+        return ResponseEntity.ok(userService.existsByEmail(email));
     }
 }
