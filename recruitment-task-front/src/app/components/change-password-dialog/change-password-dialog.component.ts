@@ -32,7 +32,6 @@ export class ChangePasswordDialogComponent implements OnInit {
 
   onFormSubmit(): void {
     if (this.userPasswordForm.valid) {
-      console.log('submit ', this.userPasswordForm.value)
       this.dialogRef.close({id: this.userDto.id, ...this.userPasswordForm.value});
     } else {
       this.messageService.displayErrorMessage("Form is not valid")
