@@ -10,6 +10,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {UserDialogComponent} from "../user-dialog/user-dialog.component";
 import {ChangePasswordDialogComponent} from "../change-password-dialog/change-password-dialog.component";
 import {ChangePasswordRequest} from "../../models/change-password-request";
+import {ConfirmDialogComponent} from "../confirm-dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-main-page',
@@ -77,8 +78,8 @@ export class MainPageComponent implements OnInit, AfterViewInit {
         this.isLoading = true;
         if (userDto.id) {
           this.userService.updateUser(userDto).subscribe({
-            next: () => {
-                this.messageService.displayErrorMessage('Successfully update user');
+              next: () => {
+                this.messageService.displayErrorMessage('User updated successfully');
                 this.isLoading = false;
                 this.loadData();
               },
@@ -91,7 +92,7 @@ export class MainPageComponent implements OnInit, AfterViewInit {
         } else {
           this.userService.addUser(userDto).subscribe({
               next: () => {
-                this.messageService.displaySuccessMessage('Successfully add user');
+                this.messageService.displaySuccessMessage('User added successfully');
                 this.isLoading = false;
                 this.loadData();
               },
@@ -112,34 +113,45 @@ export class MainPageComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe((changePasswordRequest: ChangePasswordRequest) => {
-      this.userService.changePassword(changePasswordRequest).subscribe({
-        next: () => {
-          this.messageService.displaySuccessMessage('Successfully change user password');
-          this.isLoading = false;
-          this.loadData();
-        },
-        error: () => {
-          this.messageService.displayErrorMessage('Problem with changing user password');
-          this.isLoading = false;
-        }
-        }
-      );
+      if (changePasswordRequest && changePasswordRequest.id) {
+        this.userService.changePassword(changePasswordRequest).subscribe({
+            next: () => {
+              this.messageService.displaySuccessMessage('User password changed successfully');
+              this.isLoading = false;
+              this.loadData();
+            },
+            error: () => {
+              this.messageService.displayErrorMessage('Problem with changing user password');
+              this.isLoading = false;
+            }
+          }
+        );
+      }
     })
   }
 
   onDeleteClick(user: UserDto) {
-    this.userService.deleteUser(user.id).subscribe({
-        next: () => {
-          this.messageService.displaySuccessMessage('Successfully delete user');
-          this.isLoading = false;
-          this.loadData();
-        },
-        error: () => {
-          this.messageService.displayErrorMessage('Problem with deleting user');
-          this.isLoading = false;
-        }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {title: "Confirm", message: `Are you sure you want to delete user: ${user.username}?`}
+    });
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.userService.deleteUser(user.id).subscribe({
+            next: () => {
+              this.messageService.displaySuccessMessage('User deleted successfully');
+              this.isLoading = false;
+              this.loadData();
+            },
+            error: () => {
+              this.messageService.displayErrorMessage('Problem with deleting user');
+              this.isLoading = false;
+            }
+          }
+        );
       }
-    );
+    });
+
   }
 
 }
