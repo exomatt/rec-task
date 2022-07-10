@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {CreateUserDto} from "../../models/create-user-dto";
 import {MessageService} from "../../services/message/message.service";
 import {UserDto} from "../../models/user-dto";
 

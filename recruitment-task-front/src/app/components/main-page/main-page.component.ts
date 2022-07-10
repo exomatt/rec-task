@@ -67,9 +67,9 @@ export class MainPageComponent implements OnInit, AfterViewInit {
     this.loadData();
   }
 
-  onOpenUserDialogClick(element?:UserDto) {
+  onOpenUserDialogClick(element?: UserDto) {
     const dialogRef = this.dialog.open(UserDialogComponent, {
-      data: element?element:initialCreateUserDto,
+      data: element ? element : initialCreateUserDto,
     });
 
     dialogRef.afterClosed().subscribe(userDto => {
@@ -77,7 +77,7 @@ export class MainPageComponent implements OnInit, AfterViewInit {
         this.isLoading = true;
         if (userDto.id) {
           this.userService.updateUser(userDto).subscribe({
-              next: () => {
+            next: () => {
                 this.messageService.displayErrorMessage('Successfully update user');
                 this.isLoading = false;
                 this.loadData();
@@ -111,17 +111,17 @@ export class MainPageComponent implements OnInit, AfterViewInit {
       data: element,
     });
 
-    dialogRef.afterClosed().subscribe((changePasswordRequest:ChangePasswordRequest) => {
+    dialogRef.afterClosed().subscribe((changePasswordRequest: ChangePasswordRequest) => {
       this.userService.changePassword(changePasswordRequest).subscribe({
-          next: () => {
-            this.messageService.displaySuccessMessage('Successfully change user password');
-            this.isLoading = false;
-            this.loadData();
-          },
-          error: () => {
-            this.messageService.displayErrorMessage('Problem with changing user password');
-            this.isLoading = false;
-          }
+        next: () => {
+          this.messageService.displaySuccessMessage('Successfully change user password');
+          this.isLoading = false;
+          this.loadData();
+        },
+        error: () => {
+          this.messageService.displayErrorMessage('Problem with changing user password');
+          this.isLoading = false;
+        }
         }
       );
     })
