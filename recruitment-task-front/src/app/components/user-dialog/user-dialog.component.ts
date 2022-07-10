@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {CreateUserDto} from "../../models/create-user-dto";
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MessageService} from "../../services/message/message.service";
 import {UserService} from "../../services/ user/user.service";
 
@@ -50,12 +50,12 @@ export class UserDialogComponent implements OnInit {
       const userDto: CreateUserDto = this.userForm.value
       this.userService.existsByEmail(userDto.email).subscribe({
         next: (value) => {
-          if (value) {
+          if (value && this.userDto.email !== userDto.email) {
             this.messageService.displayErrorMessage("User with that email already exists")
           } else {
             this.userService.existsByUsername(userDto.username).subscribe({
               next: (value) => {
-                if (value) {
+                if (value && this.userDto.username !== userDto.username) {
                   this.messageService.displayErrorMessage("User with that username already exists")
                 } else {
                   this.dialogRef.close({id: this.userDto.id, ...this.userForm.value});
