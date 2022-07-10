@@ -48,8 +48,11 @@ export class MainPageComponent implements OnInit, AfterViewInit {
     }).subscribe({
         next: (value: PaginatedDataWrapper<UserDto>) => {
           this.dataSource.data = value.result;
-          this.paginator.pageIndex = this.currentPage;
-          this.paginator.length = value.totalCount;
+          this.totalRows = value.totalCount;
+          setTimeout(() => {
+            this.paginator.pageIndex = this.currentPage;
+            this.paginator.length = value.totalCount;
+          });
         },
         error: () => {
           this.messageService.displayErrorMessage('Problem with getting users');
