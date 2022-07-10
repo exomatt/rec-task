@@ -18,17 +18,19 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {MatGridListModule} from "@angular/material/grid-list";
-import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
+import {UserDialogComponent} from './components/user-dialog/user-dialog.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import { ChangePasswordDialogComponent } from './components/change-password-dialog/change-password-dialog.component';
+import {ChangePasswordDialogComponent} from './components/change-password-dialog/change-password-dialog.component';
+import {ConfirmDialogComponent} from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
     UserDialogComponent,
-    ChangePasswordDialogComponent
+    ChangePasswordDialogComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     AppRoutingModule,
